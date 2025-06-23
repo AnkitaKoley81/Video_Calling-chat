@@ -33,7 +33,16 @@ app.use("/api/auth",authRoutes);
 app.use("/api/users",userRoutes);
 app.use("/api/chat",chatRoutes);
 
-app.listen(PORT,()=>{
-    console.log(`Server is running on port ${PORT}`) 
+app.get("/api/status", (req, res) => {
+    res.json({ message: "Backend is working ✅" });
+});
+
+if (process.env.NODE_ENV === "development") {
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
     connectDB();
-})
+  });
+} else {
+  connectDB(); // optional: still connect to DB in production
+}
+export default app;
