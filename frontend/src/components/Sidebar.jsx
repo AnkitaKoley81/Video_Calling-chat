@@ -4,6 +4,8 @@ import { useLocation } from 'react-router';
 import { Link } from 'react-router';
 import { BellIcon, HomeIcon, ShipWheelIcon, UsersIcon } from 'lucide-react';
 
+console.log("Sidebar component rendered ✅");
+
 const Sidebar = () => {
   const {authUser} = useAuthUser();
   const location = useLocation();

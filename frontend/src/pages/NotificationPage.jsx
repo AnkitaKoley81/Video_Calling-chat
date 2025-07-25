@@ -1,8 +1,7 @@
 
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import React, { useEffect } from 'react'
-import { acceptFriendRequest, getFriendRequests } from '../lib/api';
+import { acceptFriendRequest, getFriendRequests, rejectFriendRequest } from '../lib/api';
 import { BellIcon, ClockIcon, MessageSquareIcon, UserCheckIcon } from 'lucide-react';
 
 
@@ -12,32 +11,32 @@ const NotificationPage = () => {
   
   const queryClient = useQueryClient();
  
-  // ✅ Make sure you're handling the data structure correctly (object, not array)
-  // const { data = {}, isLoading } = useQuery({
-  //   queryKey: ["friendRequests"],
-  //   queryFn: getFriendRequests,
-  // });
+  //GET
   const { data = {}, isLoading} = useQuery({
   queryKey: ["friendRequests"],
-  queryFn: async () => {
-    console.log("👉 Calling getFriendRequests...");
-    const res = await getFriendRequests();
-    console.log("✅ Response from API:", res);
-    return res;
-  },
+  queryFn:getFriendRequests
 });
-  useEffect(()=>{
-    console.log("Friend Request Data:", data);
-  },[data])
+
+//POST
   const { mutate: acceptRequestMutation, isPending } = useMutation({
     mutationFn: acceptFriendRequest,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["friendRequests"] });
-      queryClient.invalidateQueries({ queryKey: ["friends"] });
+      queryClient.invalidateQueries({ queryKey: ["friendRequests"] });//“Please re-fetch the data for ["friendRequests"] because something has changed.”
+      queryClient.invalidateQueries({ queryKey: ["friends"] }); //["friends"] list bhi refetch hogi (kyunki ek new friend add ho gaya)
     },
   });
 
+  //POST
+  const { mutate: rejectRequestMutation, isPending: isRejecting } = useMutation({
+  mutationFn: rejectFriendRequest,
+  onSuccess: () => {
+    queryClient.invalidateQueries({ queryKey: ["friendRequests"] });
+  },
+});
+
+
   // ✅ Destructure from the correct data format
+
   const incomingRequests = data.incomingReqs || [];
   const acceptedRequests = data.acceptedReqs || [];
 
@@ -81,7 +80,7 @@ const NotificationPage = () => {
                               </div>
                             </div>
                           </div>
-
+                           <div className='flex gap-7'>
                           <button
                             className="btn btn-primary btn-sm"
                             onClick={() => acceptRequestMutation(request._id)}
@@ -89,6 +88,14 @@ const NotificationPage = () => {
                           >
                             Accept
                           </button>
+                          <button
+                           className="btn btn-primary btn-sm"
+                            onClick={() => rejectRequestMutation(request._id)}
+                           disabled={isRejecting}
+                            >
+                           Reject
+                           </button>
+                           </div>
                         </div>
                       </div>
                     </div>
@@ -126,7 +133,7 @@ const NotificationPage = () => {
                             </p>
                           </div>
                           <div className="badge badge-success">
-                            <MessageSquareIcon className="h-3 w-3 mr-1" />
+                            <MessageSquareIcon className="h-4 w-4 mr-1" />
                             New Friend
                           </div>
                         </div>

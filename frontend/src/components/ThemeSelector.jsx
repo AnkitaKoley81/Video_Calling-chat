@@ -41,8 +41,6 @@ const ThemeSelector = () => {
         }
         
       </div>
-
-
       </div>
     </div>
   )

@@ -17,3 +17,6 @@ const Layout = ({ children, showSidebar = false }) => {
 };
 
 export default Layout;
+
+// children is basically the home page
+//showSidebar = false = agar koi showSidebar prop pass nahi kare, to by default sidebar chhupa rahega.

@@ -4,12 +4,12 @@ import { logout } from '../lib/api'
 
 const useLogout = () => {
       const queryClient = useQueryClient();
-      const {mutate:logoutMutation,isPending,error} = useMutation({
+      const {mutate,isPending,error} = useMutation({
         mutationFn: logout,
         onSuccess: () => queryClient.invalidateQueries({queryKey:["authUser"]})
         
       })
-  return {logoutMutation,isPending,error}
+  return {logoutMutation:mutate,isPending,error}
 }
 
 export default useLogout

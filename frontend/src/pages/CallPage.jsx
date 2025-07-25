@@ -28,6 +28,7 @@ const CallPage = () => {
 
   const {authUser,isLoading} = useAuthUser();
 
+  //GET
   const {data:tokendata} = useQuery({
     queryKey:["streamToken"],
     queryFn:getStreamToken,
@@ -37,8 +38,6 @@ const CallPage = () => {
     const initCall = async () =>{
      
     console.log("📡 STREAM_API_KEY:", STREAM_API_KEY);
-      
-      // if(!tokendata.token || !authUser || !callId) return;
       if (!tokendata || !authUser || !callId) {
         console.warn("⛔ Required data missing, skipping call init");
         return;
@@ -110,7 +109,7 @@ const CallContent = () =>{
     return (
       <StreamTheme>
         <SpeakerLayout/>
-        <CallControls/>
+        <CallControls/> 
       </StreamTheme>
   )
 }
