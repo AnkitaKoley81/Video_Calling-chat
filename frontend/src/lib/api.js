@@ -2,6 +2,8 @@ import { axiosInstance } from "./axios";
 
 export const signup = async(signupData) =>{
     const response = await axiosInstance.post("/auth/signup",signupData);
+    localStorage.setItem("jwt",response.data.jwt)
+    console.log("response", response)
     return response.data;
 }
 ////////////////////////////////////////////////////////////////////////////////////
@@ -21,12 +23,14 @@ export  const completeOnboarding = async(userData)=>{
 }
 //////////////////////////////////////////////////////////////////////////////////////
 export const login = async(loginData) =>{
+
     const response = await axiosInstance.post("/auth/login",loginData);
     return response.data;
 }
 ///////////////////////////////////////////////////////////////////////////////////////
 
 export const logout = async () => {
+    localStorage.removeItem("jwt");
   const response = await axiosInstance.post("/auth/logout");
   return response.data;
 };
