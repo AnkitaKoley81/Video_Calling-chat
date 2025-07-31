@@ -85,9 +85,9 @@ export async function sendFriendRequest(req,res){
 //////////////////////////////////////////////////////////////////////
 
 
-export async function acceptFriendRequest(req, res) {
+export async function acceptFriendRequest(req, res) {    
   try {
-    const { id: requestId } = req.params;
+    const { id: requestId } = req.params; // Yeh FriendRequest document ka ID hai, jo database mein store hai.
 
     const friendRequest = await FriendRequest.findById(requestId);
 
@@ -96,9 +96,14 @@ export async function acceptFriendRequest(req, res) {
     }
 
      //Verify that the current req is thre recipient
+//      Jiske paas friend request aayi hai (recipient)
+// aur jo user abhi login hai (req.user.id)
+// Agar dono same nahi hai —
+// toh usko request accept karne ki permission nahi milegi.
     if (friendRequest.recipient.toString() !== req.user.id) {
       return res.status(403).json({ message: "You are not authorized to accept this request" });
     }
+
 
     friendRequest.status = "accepted";
     await friendRequest.save(); // ✅ await lagao
@@ -164,7 +169,7 @@ export async function getFriendRequest(req,res){
     }
 }
 
-
+//////////////////////////////////////////////////////////////////////////////////////
 
 
 export async function getOutgoingFriendReqs(req, res) {

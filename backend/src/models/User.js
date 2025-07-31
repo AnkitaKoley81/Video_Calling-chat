@@ -19,7 +19,7 @@ const userSchema=new mongoose.Schema({
     bio:{
         type:String,
         default:"",
-    },
+    }, 
     profilePic:{
         type:String,
         default:"",
@@ -59,7 +59,7 @@ userSchema.pre("save",async function(next){
         next();
     } catch (error) {
        next(error); 
-    }
+    }   
 })
 
 ///////////////////////////////////////////////

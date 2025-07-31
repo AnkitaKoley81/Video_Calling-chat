@@ -9,7 +9,7 @@ import cors from "cors"
 
 
 const app = express();
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3000;
 
 // app.get("/api/auth/signup",(req,res)=>{
 //     res.send("Hello World!");
@@ -27,6 +27,10 @@ app.use(cors({
     origin: true,
     credentials: true
 }))
+
+app.use('/',(req,res)=>{
+  res.send("Hello World");
+})
 
 app.use(express.json());
 app.use(cookieParser())
