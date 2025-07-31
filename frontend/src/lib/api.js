@@ -24,7 +24,9 @@ export  const completeOnboarding = async(userData)=>{
 //////////////////////////////////////////////////////////////////////////////////////
 export const login = async(loginData) =>{
 
+
     const response = await axiosInstance.post("/auth/login",loginData);
+    localStorage.setItem("jwt",response.data.token);
     return response.data;
 }
 ///////////////////////////////////////////////////////////////////////////////////////
